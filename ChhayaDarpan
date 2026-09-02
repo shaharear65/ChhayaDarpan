@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ছায়াদর্পণ - খবরের আলোয় সত্যের প্রতিফলন</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #0a2a43;
+            --primary-dark: #061c2e;
+            --accent: #c8102e;
+            --bg: #f4f6f8;
+            --card-bg: #ffffff;
+            --text: #222;
+            --text-light: #555;
+            --border: #e0e0e0;
+        }
+
+        body.dark-mode {
+            --bg: #0f1a24;
+            --card-bg: #1a2733;
+            --text: #e8e8e8;
+            --text-light: #b0b0b0;
+            --border: #2a3a4a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            width: 93%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-box input {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 30px;
+            width: 230px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--primary-dark);
+            margin-top: 8px;
+        }
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 13px 20px;
+            display: block;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .nav ul li a:hover,
+        .nav ul li a.active {
+            background: #0d3a5c;
+        }
+
+        /* Breaking */
+        .breaking {
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .breaking-label {
+            background: #8b0000;
+            padding: 9px 18px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .breaking-content {
+            padding-left: 20px;
+            animation: scroll 28s linear infinite;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-120%); }
+        }
+
+        /* Main Layout */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 28px;
+            margin: 30px auto;
+        }
+
+        /* Featured */
+        .featured {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .featured img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            padding: 22px;
+        }
+
+        .category {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .featured h1 {
+            font-size: 26px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        /* News Grid */
+        .section-title {
+            font-size: 22px;
+            margin: 30px 0 18px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 22px;
+        }
+
+        .news-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 175px;
+            object-fit: cover;
+        }
+
+        .news-card-content {
+            padding: 16px;
+        }
+
+        .news-card h3 {
+            font-size: 17px;
+            margin: 8px 0;
+            line-height: 1.4;
+        }
+
+        .meta {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .widget {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+        }
+
+        .widget h3 {
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            margin: -20px -20px 18px -20px;
+            border-radius: 12px 12px 0 0;
+            font-size: 18px;
+        }
+
+        .popular-list li {
+            list-style: none;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .popular-list li:last-child {
+            border-bottom: none;
+        }
+
+        .number {
+            background: var(--primary);
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .category-list a {
+            display: block;
+            padding: 9px 0;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: 0.2s;
+        }
+
+        .category-list a:hover {
+            color: var(--primary);
+            padding-left: 6px;
+            font-weight: 600;
+        }
+
+        /* About & Contact */
+        .about-contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 40px auto;
+        }
+
+        .about-box, .contact-box {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+        }
+
+        .contact-box input,
+        .contact-box textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .contact-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .contact-box button:hover {
+            background: #0d3a5c;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 45px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer h4 {
+            margin-bottom: 16px;
+            font-size: 19px;
+        }
+
+        .footer a {
+            color: #c5d0d8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 9px;
+            transition: 0.2s;
+        }
+
+        .footer a:hover {
+            color: white;
+            padding-left: 4px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #1a3a55;
+            font-size: 14px;
+            color: #a0b0b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 950px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+            .about-contact {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 26px;
+            }
+            .search-box input {
+                width: 100%;
+            }
+            .featured img {
+                height: 230px;
+            }
+            .featured h1 {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-top">
+            <div class="logo">ছায়াদর্পণ</div>
+            
+            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                <div class="search-box">
+                    <input type="text" placeholder="খবর খুঁজুন...">
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="theme-icon">🌙</span> থিম
+                </button>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <div class="container">
+                <ul>
+                    <li><a href="#" class="active">প্রচ্ছদ</a></li>
+                    <li><a href="#">জাতীয়</a></li>
+                    <li><a href="#">রাজনীতি</a></li>
+                    <li><a href="#">আন্তর্জাতিক</a></li>
+                    <li><a href="#">খেলা</a></li>
+                    <li><a href="#">বিনোদন</a></li>
+                    <li><a href="#">প্রযুক্তি</a></li>
+                    <li><a href="#contact">যোগাযোগ</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breaking News -->
+    <div class="breaking">
+        <div class="breaking-label">ব্রেকিং নিউজ</div>
+        <div class="breaking-content">
+            মক্কা প্যাক্টের প্রথম বৈঠক সম্পন্ন • পাকিস্তান পেল তিন বছরের নেতৃত্ব • সৌদি-তুরস্ক-পাকিস্তান জোট নিয়ে আন্তর্জাতিক মহলে আলোচনা চলছে • বাংলাদেশে ডলারের দামে নতুন রেকর্ড •
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container main">
+        <div class="content">
+            <!-- Featured -->
+            <article class="featured">
+                <img src="https://picsum.photos/900/450?random=11" alt="Featured">
+                <div class="featured-content">
+                    <span class="category">আন্তর্জাতিক</span>
+                    <h1>মক্কা প্যাক্ট: সৌদি-তুরস্ক-পাকিস্তানের নতুন জোট বিশ্ব রাজনীতিতে কী প্রভাব ফেলবে?</h1>
+                    <p class="meta">১ সেপ্টেম্বর ২০২৬ • ছায়াদর্পণ নিউজ ডেস্ক</p>
+                    <p>পবিত্র মক্কায় স্বাক্ষরিত ত্রিপক্ষীয় প্রতিরক্ষা চুক্তি ইতোমধ্যে আন্তর্জাতিক অঙ্গনে ব্যাপক আলোচনার জন্ম দিয়েছে। বিশেষজ্ঞরা মনে করছেন, এই জোট আঞ্চলিক শক্তি ভারসাম্যে গুরুত্বপূর্ণ পরিবর্তন আনতে পারে...</p>
+                </div>
+            </article>
+
+            <h2 class="section-title">সর্বশেষ খবর</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <img src="https://picsum.photos/400/250?random=12" alt="">
+                    <div class="news-card-content">
+                        <span class="category">জাতীয়</span>
+                        <h3>সরকারের নতুন অর্থনৈতিক প্রণোদনা প্যাকেজ ঘোষণা</h3>
+                        <p class="meta">২ ঘণ্টা আগে</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://picsum.photos/400/250?random=13" alt="">
+                    <div class="news-card-content">
+                        <span class="category">রাজনীতি</span>
+                        <h3>জাতীয় সংসদে গুরুত্বপূর্ণ বিল পাস</h3>
+                        <p class="meta">৩ ঘণ্টা আগে</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://picsum.photos/400/250?random=14" alt="">
+                    <div class="news-card-content">
+                        <span class="category">খেলা</span>
+                        <h3>টাইগারদের নতুন অধিনায়ক ঘোষণা করল বিসিবি</h3>
+                        <p class="meta">৫ ঘণ্টা আগে</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://picsum.photos/400/250?random=15" alt="">
+                    <div class="news-card-content">
+                        <span class="category">প্রযুক্তি</span>
+                        <h3>বাংলাদেশে কৃত্রিম বুদ্ধিমত্তার নতুন সম্ভাবনা</h3>
+                        <p class="meta">৭ ঘণ্টা আগে</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://picsum.photos/400/250?random=16" alt="">
+                    <div class="news-card-content">
+                        <span class="category">বিনোদন</span>
+                        <h3>ঢাকাই সিনেমার নতুন তারকা জন্ম নিল</h3>
+                        <p class="meta">৯ ঘণ্টা আগে</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://picsum.photos/400/250?random=17" alt="">
+                    <div class="news-card-content">
+                        <span class="category">আন্তর্জাতিক</span>
+                        <h3>মধ্যপ্রাচ্যে উত্তেজনা বৃদ্ধি, জাতিসংঘের উদ্বেগ</h3>
+                        <p class="meta">১০ ঘণ্টা আগে</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="widget">
+                <h3>জনপ্রিয় খবর</h3>
+                <ul class="popular-list">
+                    <li><span class="number">১</span><div>মক্কা প্যাক্ট নিয়ে ভারতের প্রতিক্রিয়া কী?</div></li>
+                    <li><span class="number">২</span><div>ডলারের দামে আবারও রেকর্ড</div></li>
+                    <li><span class="number">৩</span><div>আবহাওয়া অধিদপ্তরের সতর্কবার্তা</div></li>
+                    <li><span class="number">৪</span><div>শিক্ষা খাতে বড় পরিবর্তনের ইঙ্গিত</div></li>
+                    <li><span class="number">৫</span><div>ক্রিকেটে বাংলাদেশের নতুন রেকর্ড</div></li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3>ক্যাটাগরি</h3>
+                <div class="category-list">
+                    <a href="#">জাতীয় (১৪৮)</a>
+                    <a href="#">রাজনীতি (৯২)</a>
+                    <a href="#">আন্তর্জাতিক (১৬৭)</a>
+                    <a href="#">খেলাধুলা (৭৮)</a>
+                    <a href="#">বিনোদন (৬৫)</a>
+                    <a href="#">প্রযুক্তি (৫১)</a>
+                    <a href="#">মতামত (৩৪)</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- About & Contact -->
+    <div class="container about-contact" id="contact">
+        <div class="about-box">
+            <h2 style="margin-bottom:15px; color:var(--primary);">আমাদের সম্পর্কে</h2>
+            <p><strong>ছায়াদর্পণ</strong> একটি নির্ভীক ও নিরপেক্ষ অনলাইন নিউজ পোর্টাল। আমরা বিশ্বাস করি সত্যের আলোয় সমাজকে আলোকিত করাই সাংবাদিকতার আসল দায়িত্ব।</p>
+            <br>
+            <p>জাতীয়, আন্তর্জাতিক, রাজনীতি, খেলা, বিনোদন ও প্রযুক্তিসহ সব খবর আমরা তুলে ধরি দ্রুত ও নির্ভরযোগ্যভাবে।</p>
+        </div>
+
+        <div class="contact-box">
+            <h2 style="margin-bottom:15px; color:var(--primary);">যোগাযোগ করুন</h2>
+            <form onsubmit="event.preventDefault(); alert('আপনার বার্তা পাঠানো হয়েছে! ধন্যবাদ।');">
+                <input type="text" placeholder="আপনার নাম" required>
+                <input type="email" placeholder="ইমেইল" required>
+                <textarea rows="4" placeholder="আপনার বার্তা লিখুন..." required></textarea>
+                <button type="submit">বার্তা পাঠান</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h4>ছায়াদর্পণ</h4>
+                    <p>খবরের আলোয় সত্যের প্রতিফলন। নির্ভীক, নিরপেক্ষ ও দায়িত্বশীল সাংবাদিকতাই আমাদের অঙ্গীকার।</p>
+                </div>
+                <div>
+                    <h4>গুরুত্বপূর্ণ লিংক</h4>
+                    <a href="#">আমাদের সম্পর্কে</a>
+                    <a href="#contact">যোগাযোগ</a>
+                    <a href="#">বিজ্ঞাপন দিন</a>
+                    <a href="#">গোপনীয়তা নীতি</a>
+                    <a href="#">শর্তাবলী</a>
+                </div>
+                <div>
+                    <h4>অনুসরণ করুন</h4>
+                    <a href="#">ফেসবুক</a>
+                    <a href="#">ইউটিউব</a>
+                    <a href="#">টুইটার / এক্স</a>
+                    <a href="#">ইন্সটাগ্রাম</a>
+                </div>
+            </div>
+            <div class="copyright">
+                © ২০২৬ ছায়াদর্পণ। সর্বস্বত্ব সংরক্ষিত।
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('theme-icon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.textContent = '☀️';
+            } else {
+                icon.textContent = '🌙';
+            }
+        }
+    </script>
+</body>
+</html>
